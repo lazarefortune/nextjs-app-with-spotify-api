@@ -1,10 +1,9 @@
 import Song from "./Song";
 import Loader from "./Loader";
 
-function ListSongs( { songs, loading, error } ) {
-
+function ListSongs({ songs, loading, error }) {
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
   if (error) {
@@ -12,14 +11,14 @@ function ListSongs( { songs, loading, error } ) {
   }
 
   if (songs.length === 0) {
-    return <div>Aucun résultat</div>;
+    return <div className="text-blue-400">Aucun résultat</div>;
   }
 
   return (
-      <div className="grid grid-cols-4 gap-4">
-          {songs.map((song) => (
-            <Song key={song.id} song={song} />
-          ))}
+    <div className="grid grid-cols-4 gap-4">
+      {songs.map((song) => (
+        <Song key={song.id} song={song} />
+      ))}
     </div>
   );
 }

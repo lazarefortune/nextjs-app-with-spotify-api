@@ -1,3 +1,4 @@
+import Poster from "./Poster";
 import SearchBar from "./SearchBar";
 
 function Body({ session }) {
@@ -10,13 +11,14 @@ function Body({ session }) {
     <section className="bg-black text-white ml-24 py-4 space-y-8 md:max-w-6xl flex-grow md:mr-2.5">
       {/* Le composant barre de recherche contient aussi les résultats */}
       <SearchBar />
-      
-      <div
-        className="grid grid-cols-2 py-4 overflow-y-scroll 
-      scrollbar-hide h-96 lg:grid-cols-2 xl:grid-cols-4 gap-x-4 gap-y-8"
-      >
-        
-        {user && <h1 className="text-center">Bonjour {user.name}</h1>}
+      <Poster />
+
+      <div className="grid grid-cols-2 py-4 overflow-y-scroll scrollbar-hide h-96 lg:grid-cols-2 xl:grid-cols-4 gap-x-4 gap-y-8">
+        {user && (
+          <h1 className="text-center border-[#dadada] text-pink-200">
+            Bonjour {user.name}
+          </h1>
+        )}
       </div>
     </section>
   );
