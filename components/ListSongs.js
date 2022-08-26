@@ -7,7 +7,7 @@ function ListSongs({ songs, loading, error }) {
   }
 
   if (error) {
-    return <div>Error: {props.error.message}</div>;
+    return <div>Error: {error.message}</div>;
   }
 
   if (songs.length === 0) {
@@ -15,7 +15,7 @@ function ListSongs({ songs, loading, error }) {
   }
 
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
       {songs.map((song) => (
         <Song key={song.id} song={song} />
       ))}

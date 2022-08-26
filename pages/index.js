@@ -1,6 +1,5 @@
-import { useRouter } from "next/router";
-import React from "react";
-import { useSession } from "next-auth/react";
+import {useEffect, useState} from "react";
+import {getSession, signIn } from "next-auth/react";
 import Loader from "../components/Loader";
 import Header from "../components/Header";
 import Body from "../components/Body";
@@ -8,27 +7,35 @@ import Right from "../components/Right";
 import Sidebar from "../components/Sidebar";
 
 function Index() {
-  // Redirection en cas de non connexion
-  const router = useRouter();
-  const { status, data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push("login");
-    },
-  });
 
-  if (status === "loading") {
-    return <Loader />
-  }
+    const [loading, setLoading] = useState(true);
 
-  return (
-    <main>
-      <Header session={session} />
-      <Sidebar />
-      <Body session={session} />
-      <Right />
-    </main>
-  );
+    useEffect(() => {
+        const securePage = async () => {
+            const session = await getSession();
+            if (!session) {
+                setLoading(false);
+                signIn()
+            } else {
+                setLoading(false);
+            }
+        }
+        securePage();
+    }, []);
+
+
+    if (loading) {
+        return <Loader/>
+    }
+
+    return (
+        <>
+            <Header/>
+            <Sidebar/>
+            <Body/>
+            <Right/>
+        </>
+    );
 }
 
 export default Index;

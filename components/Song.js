@@ -1,22 +1,48 @@
-function Song({ song }) {
-  return (
-    <div className="block w-56 p-6 mx-2 bg-white rounded-lg shadow-lg">
-      <h5 className="mb-2 text-xl font-medium leading-tight text-gray-900">
-        {song.name}
-      </h5>
-      <p className="mb-4 text-base text-gray-700">
-        <h3>{song.name}</h3>
-        <p>{song.artists.map((artist) => artist.name).join(", ")}</p>
-        <p>{song.album.name}</p>
-      </p>
-      <button
-        type="button"
-        className=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-      >
-        Ecouter
-      </button>
-    </div>
-  );
+import {IoPlay} from "react-icons/io5";
+import {useState} from "react";
+
+function Song({song}) {
+
+    let [image, setImage] = useState(null);
+    // check if image is available and define the image url
+    if ('album' in song && 'images' in song.album && song.album.images.length > 0) {
+        image = song.album.images[0];
+    }
+
+    return (
+        <div className="rounded overflow-hidden shadow-lg bg-amber-50">
+            {image && (
+                <img
+                    src={image.url}
+                    alt=""
+                    height={image.height}
+                    width={image.width}
+                    className="w-full"
+                />
+            )}
+            <div className="px-6 py-4">
+                <div className="font-bold text-xl text-black mb-2">{song.name}</div>
+                <p className="text-gray-700 text-base">
+                    {song.artists.map((artist) => artist.name).join(", ")}
+                </p>
+            </div>
+            {/* music player */}
+            <div
+                className="h-10 w-10 bg-[#42cbcf] rounded-full flex items-center justify-center
+    group-hover:bg-[#42cbcf] flex-shrink-0"
+            >
+                <IoPlay className="text-l ml-[1px]"/>
+            </div>
+            {/*<div className="px-6 pt-4 pb-2">*/}
+            {/*    <span*/}
+            {/*        className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>*/}
+            {/*    <span*/}
+            {/*        className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>*/}
+            {/*    <span*/}
+            {/*        className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>*/}
+            {/*</div>*/}
+        </div>
+    );
 }
 
 export default Song;

@@ -1,7 +1,8 @@
-import { signOut } from "next-auth/react";
+import {signIn, signOut, useSession} from "next-auth/react";
 
-function Header({ session }) {
-  const { user } = session;
+function Header() {
+
+  const {data: session, loading} = useSession();
 
   return (
     <header>
@@ -24,7 +25,7 @@ function Header({ session }) {
           <div className="text-sm lg:flex-grow"></div>
           <div>
             {/* Bref dans l'idée c'est de faire un logout ici */}
-            {user && (
+            {session && (
               <a
                 href="#"
                 className="inline-block px-4 py-2 mt-4 text-sm leading-none text-white border border-white rounded hover:border-transparent hover:text-teal-500 hover:bg-white lg:mt-0"
@@ -34,9 +35,10 @@ function Header({ session }) {
               </a>
             )}
 
-            {!user && (
+            {!loading && !session && (
               <a
                 href="#"
+                onClick={() => signIn()}
                 className="inline-block px-4 py-2 mt-4 text-sm leading-none text-white border border-white rounded hover:border-transparent hover:text-teal-500 hover:bg-white lg:mt-0"
               >
                 Sign In

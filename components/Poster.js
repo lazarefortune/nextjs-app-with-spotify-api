@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { IoPause, IoPlay } from "react-icons/io5";
-import ListSongs from "./ListSongs";
 
 function Poster({ songs }) {
   return (

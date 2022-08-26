@@ -1,27 +1,122 @@
 import Poster from "./Poster";
-import SearchBar from "./SearchBar";
+import {useAppContext} from "../src/context/state";
+import {useEffect, useState} from "react";
+import SearchArea from "./SearchArea";
+import spotifyApi from "../src/api/spotifyApi";
+import Albums from "./Albums";
 
-function Body({ session }) {
-  // On peut faire ça parce que le Body n'est visible que si le parent a la session
-  // Attention: On peut faire mieux que ça, c'est juste un exemple
+function Body() {
 
-  const { user } = session;
+    const {session, status} = useAppContext();
 
-  return (
-    <section className="bg-black text-white ml-24 py-4 space-y-8 md:max-w-6xl flex-grow md:mr-2.5">
-      {/* Le composant barre de recherche contient aussi les résultats */}
-      <SearchBar />
-      <Poster />
+    const [user, setUser] = useState(null);
 
-      <div className="grid grid-cols-2 py-4 overflow-y-scroll scrollbar-hide h-96 lg:grid-cols-2 xl:grid-cols-4 gap-x-4 gap-y-8">
-        {user && (
-          <h1 className="text-center border-[#dadada] text-pink-200">
-            Bonjour {user.name}
-          </h1>
-        )}
-      </div>
-    </section>
-  );
+    useEffect(() => {
+        if (status === "authenticated" && session) {
+            setUser(session.user);
+        }
+    }, [session, status]);
+
+    const [releases, setReleases] = useState(null);
+    const [releasesLoading, setReleasesLoading] = useState(false);
+    const [releasesError, setReleasesError] = useState(null);
+    const [releasesTotal, setReleasesTotal] = useState(0);
+    const [releasesNext, setReleasesNext] = useState(null);
+    const [releasesPrevious, setReleasesPrevious] = useState(null);
+    const [releasesLimit, setReleasesLimit] = useState(10);
+    const [releasesOffset, setReleasesOffset] = useState(0);
+    const [releasesPage, setReleasesPage] = useState(1);
+    const [releasesPages, setReleasesPages] = useState(1);
+
+    useEffect(() => {
+            if (!user) {
+                setReleases([]);
+                return;
+            }
+            if (session) {
+                setReleasesLoading(true);
+                spotifyApi.setAccessToken(session.accessToken);
+                spotifyApi
+                    .getNewReleases({
+                        limit: releasesLimit,
+                        offset: releasesOffset,
+                        country: "FR",
+                    })
+                    .then((data) => {
+                        setReleases(data.body.albums.items);
+                        setReleasesTotal(data.body.albums.total);
+                        setReleasesNext(data.body.albums.next);
+                        setReleasesPrevious(data.body.albums.previous);
+                        setReleasesLoading(false);
+                    })
+                    .catch((error) => {
+                        setReleasesError(error);
+                        setReleasesLoading(false);
+                    });
+            }
+        }
+        , [releasesLimit, releasesOffset, session, user]);
+
+    //  useeffect pour la pagination
+    useEffect(() => {
+            if (!user) {
+                setReleases([]);
+                return;
+            }
+            if (session) {
+                setReleasesLoading(true);
+                spotifyApi.setAccessToken(session.accessToken);
+
+                spotifyApi
+                    .getNewReleases({
+                        limit: releasesLimit,
+                        offset: releasesOffset,
+                        country: "FR",
+                    })
+                    .then((data) => {
+                        setReleases(data.body.albums.items);
+                        setReleasesTotal(data.body.albums.total);
+                        setReleasesNext(data.body.albums.next);
+                        setReleasesPrevious(data.body.albums.previous);
+                        setReleasesLoading(false);
+                    }).catch((error) => {
+                    setReleasesError(error);
+                    setReleasesLoading(false);
+                });
+            }
+        }
+        , [releasesLimit, releasesOffset, session, user]);
+
+    const handlePageChange = (page) => {
+        setReleasesPage(page);
+        setReleasesOffset((page - 1) * releasesLimit);
+    }
+
+    const handleLimitChange = (limit) => {
+        setReleasesLimit(limit);
+        setReleasesOffset(0);
+        setReleasesPage(1);
+    }
+
+    return (
+        <section className="bg-black text-white ml-24 py-4 space-y-8 md:max-w-6xl flex-grow md:mr-2.5">
+
+            <SearchArea/>
+
+            {/*<Poster/>*/}
+
+            <div className="">
+                <Albums albums={releases} loading={releasesLoading} error={releasesError}
+                        total={releasesTotal} next={releasesNext} previous={releasesPrevious}
+                        limit={releasesLimit} offset={releasesOffset} page={releasesPage}
+                        pages={releasesPages} onPageChange={handlePageChange}
+                        onLimitChange={handleLimitChange}/>
+            </div>
+
+
+
+        </section>
+    );
 }
 
 export default Body;
