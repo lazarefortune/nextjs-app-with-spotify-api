@@ -31,7 +31,9 @@ function Song({song}) {
                 className="h-10 w-10 bg-[#42cbcf] rounded-full flex items-center justify-center
     group-hover:bg-[#42cbcf] flex-shrink-0"
             >
-                <IoPlay className="text-l ml-[1px]"/>
+                <button>
+                    <IoPlay className="text-l ml-[1px]"/>
+                </button>
             </div>
             {/*<div className="px-6 pt-4 pb-2">*/}
             {/*    <span*/}

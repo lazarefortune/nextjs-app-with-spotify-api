@@ -18,7 +18,9 @@ function Sidebar() {
           <a href="/" className="flex items-center space-x-3">
               <IoHome className="text-4xl text-white siderbarIcon cursor-pointer" />
           </a>
-          <IoHeart className="text-4xl text-white siderbarIcon cursor-pointer" />
+          <a href="/my" className="flex items-center space-x-3">
+              <IoHeart className="text-4xl text-white siderbarIcon cursor-pointer" />
+          </a>
           <IoAddOutline className="text-4xl text-white siderbarIcon cursor-pointer" />
       </div>
     </section>
