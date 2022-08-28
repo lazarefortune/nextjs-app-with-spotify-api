@@ -57,36 +57,6 @@ function Body() {
         }
         , [releasesLimit, releasesOffset, session, user]);
 
-    //  useeffect pour la pagination
-    useEffect(() => {
-            if (!user) {
-                setReleases([]);
-                return;
-            }
-            if (session) {
-                setReleasesLoading(true);
-                spotifyApi.setAccessToken(session.accessToken);
-
-                spotifyApi
-                    .getNewReleases({
-                        limit: releasesLimit,
-                        offset: releasesOffset,
-                        country: "FR",
-                    })
-                    .then((data) => {
-                        setReleases(data.body.albums.items);
-                        setReleasesTotal(data.body.albums.total);
-                        setReleasesNext(data.body.albums.next);
-                        setReleasesPrevious(data.body.albums.previous);
-                        setReleasesLoading(false);
-                    }).catch((error) => {
-                    setReleasesError(error);
-                    setReleasesLoading(false);
-                });
-            }
-        }
-        , [releasesLimit, releasesOffset, session, user]);
-
     const handlePageChange = (page) => {
         setReleasesPage(page);
         setReleasesOffset((page - 1) * releasesLimit);
@@ -103,17 +73,13 @@ function Body() {
 
             <SearchArea/>
 
-            {/*<Poster/>*/}
-
-            <div className="">
+            {/*<div className="">*/}
                 <Albums albums={releases} loading={releasesLoading} error={releasesError}
                         total={releasesTotal} next={releasesNext} previous={releasesPrevious}
                         limit={releasesLimit} offset={releasesOffset} page={releasesPage}
                         pages={releasesPages} onPageChange={handlePageChange}
                         onLimitChange={handleLimitChange}/>
-            </div>
-
-
+            {/*</div>*/}
 
         </section>
     );

@@ -1,5 +1,6 @@
 import {IoPlay} from "react-icons/io5";
 import {useState} from "react";
+import Image from "next/image";
 
 function Song({song}) {
 
@@ -12,7 +13,7 @@ function Song({song}) {
     return (
         <div className="rounded overflow-hidden shadow-lg bg-amber-50">
             {image && (
-                <img
+                <Image
                     src={image.url}
                     alt=""
                     height={image.height}

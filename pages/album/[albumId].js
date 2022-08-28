@@ -6,6 +6,7 @@ import ListSongs from "../../components/ListSongs";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import Right from "../../components/Right";
+import Image from "next/image";
 
 function ShowAlbum() {
 
@@ -38,9 +39,8 @@ function ShowAlbum() {
                 setAlbumLoading(true);
                 spotifyApi.setAccessToken(session.accessToken);
                 spotifyApi
-                    .getAlbum(albumId)
+                    .getAlbum([albumId])
                     .then((data) => {
-                        // console.log(data.body.images[0].url);
                         setImageAlbum(data.body.images[0].url);
                         setAlbum(data.body);
                         setAlbumLoading(false);
@@ -73,7 +73,7 @@ function ShowAlbum() {
                 setTracksLoading(true);
                 spotifyApi.setAccessToken(session.accessToken);
                 spotifyApi
-                    .getAlbumTracks(albumId, {
+                    .getAlbumTracks([albumId], {
                         limit: tracksLimit,
                         offset: tracksOffset,
                     })
@@ -117,16 +117,20 @@ function ShowAlbum() {
             <Header/>
             <Sidebar/>
             <div>
-                {albumError && <div>{albumError.message}</div>}
+                {albumError &&
+                    <div className="flex items-center justify-center h-screen">
+                        <div className="text-white text-3xl">{albumError.message}</div>
+                    </div>
+                }
 
                 {!albumLoading && !albumError && album && (
-                    <h1 className="text-white text-5xl text-center mt-8 ">Album : {album.name}</h1>
+                    <h1 className="text-white text-5xl text-center mt-8">Album : {album.name}</h1>
                 )}
 
                 {/*album image */}
                 {!albumLoading && !albumError && imageAlbum && (
                     <div className="flex justify-center">
-                        <img className="" src={imageAlbum} alt={album.name}
+                        <Image className="" src={imageAlbum} alt={album.name}
                              width="100" height="100"/>
                     </div>
                 )}

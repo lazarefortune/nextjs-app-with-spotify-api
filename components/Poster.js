@@ -1,5 +1,6 @@
 import React from "react";
 import { IoPause, IoPlay } from "react-icons/io5";
+import Image from "next/image";
 
 function Poster({ songs }) {
   return (
@@ -10,7 +11,7 @@ function Poster({ songs }) {
      duration-200 ease-out group-mx-auto space-y-5 top-1.5
     "
       >
-        <img
+        <Image
           src={songs}
           alt=""
           className="absolute inset-0 object-contain w-full h-full groupe-hover:opacity-100"

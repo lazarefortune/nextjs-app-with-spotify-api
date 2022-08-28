@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { IoCompass, IoHome, IoAddOutline, IoHeart } from "react-icons/io5";
+import Link from "next/link";
 
 function Sidebar() {
   return (
@@ -15,12 +16,12 @@ function Sidebar() {
       />
 
       <div className="flex flex-col space-y-8">
-          <a href="/" className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3">
               <IoHome className="text-4xl text-white siderbarIcon cursor-pointer" />
-          </a>
-          <a href="/my" className="flex items-center space-x-3">
+          </Link>
+          <Link href="/my" className="flex items-center space-x-3">
               <IoHeart className="text-4xl text-white siderbarIcon cursor-pointer" />
-          </a>
+          </Link>
           <IoAddOutline className="text-4xl text-white siderbarIcon cursor-pointer" />
       </div>
     </section>

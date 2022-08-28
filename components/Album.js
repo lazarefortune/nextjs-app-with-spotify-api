@@ -1,4 +1,5 @@
 import {IoPause, IoPlay} from "react-icons/io5";
+import Image from "next/image";
 
 function Album(props) {
     const {album} = props;
@@ -10,7 +11,7 @@ function Album(props) {
             cursor-pointer hover:scale-105 hover:text-white/100 transition
             duration-200 ease-out group-mx-auto space-y-5 top-1.5
         ">
-            <img
+            <Image
                 src={image.url}
                 alt=""
                 height={image.height}
